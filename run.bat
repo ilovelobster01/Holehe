@@ -22,8 +22,8 @@ echo Python location:
 where python
 
 REM Check if all required files exist
-if not exist app.py (
-    echo Error: app.py not found!
+if not exist run.py (
+    echo Error: run.py not found!
     pause
     exit /b 1
 )
@@ -34,9 +34,9 @@ if not exist requirements.txt (
     exit /b 1
 )
 
-if not exist templates (
+if not exist holehe_web\templates (
     echo Error: templates directory not found!
-    echo Please make sure the templates directory exists with index.html
+    echo Please make sure the holehe_web\templates directory exists with index.html
     pause
     exit /b 1
 )
@@ -51,7 +51,7 @@ if not exist holehe_source (
 
 REM Test critical imports
 echo Testing imports...
-python -c "import sys, os; sys.path.insert(0, os.path.join('.', 'holehe_source')); from holehe.core import import_submodules; import httpx; import trio; import flask; print('✓ All critical imports successful')"
+python -c "from holehe_web import create_app; print('✓ App factory import successful')"
 
 if %errorlevel% neq 0 (
     echo Import test failed. Please run setup.bat again.
@@ -59,12 +59,26 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
+REM Find an open port
+set port=5001
+echo Searching for an open port starting at %port%...
+
+:findport
+netstat -aon | findstr ":%port%" | findstr "LISTENING" > nul
+if %errorlevel% equ 0 (
+    echo Port %port% is in use.
+    set /a port+=1
+    goto findport
+)
+
+echo Port %port% is available.
+
 REM Start the application
 echo Starting Holehe Web Interface...
-echo The web interface will be available at: http://localhost:5001
+echo The web interface will be available at: http://localhost:%port%
 echo Press Ctrl+C to stop the server
 echo.
 
-python app.py --host 0.0.0.0 --port 5001
+python run.py --host 0.0.0.0 --port %port%
 
 pause

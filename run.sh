@@ -22,8 +22,8 @@ echo "Python location: $(which python)"
 echo "Python version: $(python --version)"
 
 # Check if all required files exist
-if [ ! -f "app.py" ]; then
-    echo "Error: app.py not found!"
+if [ ! -f "run.py" ]; then
+    echo "Error: run.py not found!"
     exit 1
 fi
 
@@ -32,9 +32,9 @@ if [ ! -f "requirements.txt" ]; then
     exit 1
 fi
 
-if [ ! -d "templates" ]; then
+if [ ! -d "holehe_web/templates" ]; then
     echo "Error: templates directory not found!"
-    echo "Please make sure the templates directory exists with index.html"
+    echo "Please make sure the holehe_web/templates directory exists with index.html"
     exit 1
 fi
 
@@ -47,30 +47,31 @@ fi
 
 # Test critical imports
 echo "Testing imports..."
-python -c "
-import sys, os
-sys.path.insert(0, os.path.join('.', 'holehe_source'))
-try:
-    from holehe.core import import_submodules
-    import httpx
-    import trio
-    import flask
-    print('✓ All critical imports successful')
-except ImportError as e:
-    print(f'✗ Import error: {e}')
-    print('Please run setup.sh again to reinstall dependencies.')
-    sys.exit(1)
-"
+python -c "from holehe_web import create_app; print('✓ App factory import successful')"
 
 if [ $? -ne 0 ]; then
     echo "Import test failed. Please run setup.sh again."
     exit 1
 fi
 
+# Find an open port
+port=5001
+echo "Searching for an open port starting at $port..."
+
+while true; do
+    if ! lsof -i:$port > /dev/null; then
+        echo "Port $port is available."
+        break
+    else
+        echo "Port $port is in use."
+        port=$((port+1))
+    fi
+done
+
 # Start the application
 echo "Starting Holehe Web Interface..."
-echo "The web interface will be available at: http://localhost:5001"
+echo "The web interface will be available at: http://localhost:$port"
 echo "Press Ctrl+C to stop the server"
 echo ""
 
-python app.py --host 0.0.0.0 --port 5001
+python run.py --host 0.0.0.0 --port $port

@@ -8,7 +8,7 @@ from . import search as holehe_search
 from . import reporting
 from .utils import is_email
 
-main = Blueprint('main', __name__, static_folder='static', template_folder='templates')
+main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():

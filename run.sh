@@ -49,7 +49,7 @@ fi
 echo "Testing imports..."
 python -c "
 import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'holehe_source'))
+sys.path.insert(0, os.path.join('.', 'holehe_source'))
 try:
     from holehe.core import import_submodules
     import httpx

@@ -51,7 +51,7 @@ if not exist holehe_source (
 
 REM Test critical imports
 echo Testing imports...
-python -c "import sys, os; sys.path.insert(0, os.path.join(os.path.dirname('__file__'), 'holehe_source')); from holehe.core import import_submodules; import httpx; import trio; import flask; print('✓ All critical imports successful')"
+python -c "import sys, os; sys.path.insert(0, os.path.join('.', 'holehe_source')); from holehe.core import import_submodules; import httpx; import trio; import flask; print('✓ All critical imports successful')"
 
 if %errorlevel% neq 0 (
     echo Import test failed. Please run setup.bat again.

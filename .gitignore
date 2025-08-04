@@ -1,0 +1,35 @@
+# Holehe Web Interface .gitignore
+
+# Virtual environment
+venv/
+env/
+*.pyc
+__pycache__/
+
+# Holehe source code (cloned during setup)
+holehe_source/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+*.pid
+
+# PDF reports (temporary)
+*.pdf
+
+# Flask session files
+flask_session/
+
+# Environment variables
+.env
+.env.local

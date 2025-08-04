@@ -17,6 +17,10 @@ fi
 echo "Activating virtual environment..."
 source venv/bin/activate
 
+# Verify Python and pip are from venv
+echo "Python location: $(which python)"
+echo "Python version: $(python --version)"
+
 # Check if all required files exist
 if [ ! -f "app.py" ]; then
     echo "Error: app.py not found!"
@@ -31,6 +35,35 @@ fi
 if [ ! -d "templates" ]; then
     echo "Error: templates directory not found!"
     echo "Please make sure the templates directory exists with index.html"
+    exit 1
+fi
+
+if [ ! -d "holehe_source" ]; then
+    echo "Error: holehe_source directory not found!"
+    echo "The Holehe source code should be automatically downloaded during setup."
+    echo "Please run setup.sh again."
+    exit 1
+fi
+
+# Test critical imports
+echo "Testing imports..."
+python -c "
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'holehe_source'))
+try:
+    from holehe.core import import_submodules
+    import httpx
+    import trio
+    import flask
+    print('✓ All critical imports successful')
+except ImportError as e:
+    print(f'✗ Import error: {e}')
+    print('Please run setup.sh again to reinstall dependencies.')
+    sys.exit(1)
+"
+
+if [ $? -ne 0 ]; then
+    echo "Import test failed. Please run setup.sh again."
     exit 1
 fi
 

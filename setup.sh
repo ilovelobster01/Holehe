@@ -43,9 +43,31 @@ pip install --upgrade pip
 echo "Installing dependencies..."
 pip install -r requirements.txt
 
+# Check if holehe_source exists, if not clone it
+if [ ! -d "holehe_source" ]; then
+    echo "Downloading Holehe source code..."
+    git clone https://github.com/megadose/holehe.git holehe_source
+else
+    echo "Holehe source already exists."
+fi
+
 # Create templates directory
 echo "Creating templates directory..."
 mkdir -p templates
+
+# Test the installation
+echo "Testing installation..."
+python -c "
+import sys, os
+sys.path.insert(0, os.path.join('.', 'holehe_source'))
+try:
+    from holehe.core import import_submodules
+    import httpx, trio, flask
+    print('✓ Installation test successful')
+except ImportError as e:
+    print(f'✗ Installation test failed: {e}')
+    sys.exit(1)
+"
 
 echo ""
 echo "========================================"

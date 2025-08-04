@@ -40,9 +40,27 @@ REM Install dependencies
 echo Installing dependencies...
 pip install -r requirements.txt
 
+REM Check if holehe_source exists, if not clone it
+if not exist holehe_source (
+    echo Downloading Holehe source code...
+    git clone https://github.com/megadose/holehe.git holehe_source
+) else (
+    echo Holehe source already exists.
+)
+
 REM Create templates directory
 echo Creating templates directory...
 if not exist templates mkdir templates
+
+REM Test the installation
+echo Testing installation...
+python -c "import sys, os; sys.path.insert(0, os.path.join('.', 'holehe_source')); from holehe.core import import_submodules; import httpx, trio, flask; print('✓ Installation test successful')"
+
+if %errorlevel% neq 0 (
+    echo Installation test failed. Please check the error messages above.
+    pause
+    exit /b 1
+)
 
 echo.
 echo ========================================

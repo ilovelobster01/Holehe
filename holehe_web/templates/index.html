@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holehe Web Interface</title>
+    <link rel="stylesheet" href="{{ url_for('main.static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📧 Holehe</div>
+            <div class="subtitle">Find registered accounts from email addresses</div>
+        </div>
+
+        <form class="search-form" id="searchForm">
+            <div class="form-group">
+                <label for="email">Enter Email Address:</label>
+                <input type="email" id="email" name="email" required
+                       placeholder="e.g. example@domain.com" autocomplete="off">
+            </div>
+            <button type="submit" class="search-btn" id="searchBtn">
+                🔍 Check Email Accounts
+            </button>
+        </form>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Starting search...</div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="results-actions" id="resultsActions" style="display: none;">
+                <h2 class="results-title">🎯 Search Results</h2>
+                <div>
+                    <button class="download-btn" id="downloadBtnTop">
+                        📄 Download PDF Report
+                    </button>
+                    <button class="reset-btn" id="resetBtn">
+                        🔄 New Search
+                    </button>
+                </div>
+            </div>
+            <div class="results-summary" id="resultsSummary"></div>
+
+            <div class="filter-section" id="filterSection" style="display: none;">
+                <h3 style="margin-top: 0; color: #333;">📊 Results Breakdown</h3>
+                <div class="filter-stats" id="filterStats"></div>
+                <div>
+                    <strong>Filter Results:</strong>
+                    <div class="filter-buttons" id="filterButtons">
+                        <button class="filter-btn active" data-filter="all">
+                            🔍 Show All
+                        </button>
+                        <button class="filter-btn" data-filter="found">
+                            ✅ Found Only
+                        </button>
+                        <button class="filter-btn" data-filter="not_found">
+                            ❌ Not Found Only
+                        </button>
+                        <button class="filter-btn" data-filter="rate_limited">
+                            ⚠️ Rate Limited Only
+                        </button>
+                        <button class="filter-btn" data-filter="error">
+                            🚫 Errors Only
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profiles-list" id="profilesList"></div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="download-btn" id="downloadBtnBottom" style="display: none;">
+                    📄 Download PDF Report
+                </button>
+            </div>
+        </div>
+
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top-btn" id="backToTopBtn">
+        ↑ Top
+    </button>
+
+    <script src="{{ url_for('main.static', filename='js/main.js') }}"></script>
+</body>
+</html>

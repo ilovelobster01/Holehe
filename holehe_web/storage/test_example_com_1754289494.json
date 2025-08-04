@@ -1,0 +1,9 @@
+{
+    "search_id": "test_example_com_1754289494",
+    "email": "test@example.com",
+    "status": "running",
+    "progress": 20,
+    "message": "Checking 123 websites...",
+    "results": null,
+    "created_at": "2025-08-04T06:38:14.141678"
+}
